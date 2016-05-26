@@ -20,19 +20,21 @@ case class Parameter(typ: String, typeParameters: Seq[Parameter]) {
     if(typeParameters.nonEmpty) s"$typ${typeParameters.mkString("<", ", ", ">")}"
     else typ
   }
-  def descriptor = typ match {
-    case "byte" => "B"
-    case "char" => "C"
-    case "double" => "D"
-    case "float" => "F"
-    case "short" => "S"
-    case "void" => "V"
-    case "int" => "I"
-    case "long" => "J"
-    case "boolean" => "Z"
-    case _ => s"L$typ;"
-  }
+  def descriptor = Parameter.descriptorCache(typ)
 }
 object Parameter {
   object WildCard extends Parameter("*", Nil)
+
+  private val descriptorCache = Map(
+    "byte" -> "B",
+    "char" -> "C",
+    "double" -> "D",
+    "float" -> "F",
+    "short" -> "S",
+    "void" -> "V",
+    "int" -> "I",
+    "long" -> "J",
+    "boolean" -> "Z"
+  ).withDefault(typ => s"L${typ.replace('.', '/')};")
+
 }
