@@ -1,4 +1,4 @@
-package com.example
+package com.basselop
 
 import scala.collection.immutable.Seq
 

@@ -11,3 +11,5 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.4" % "test"
 //libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.3.11"
 
 libraryDependencies += "org.parboiled" %% "parboiled" % "2.1.3"
+
+libraryDependencies += "com.github.scopt" %% "scopt" % "3.4.0"

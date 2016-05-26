@@ -1,5 +1,7 @@
-package com.example
+package com.basselop
 
+
+import java.io.FileOutputStream
 
 import org.parboiled2._
 
@@ -15,12 +17,23 @@ object Kritta extends App {
              | }
              |}""".stripMargin
   lazy val file = io.Source.fromFile("/home/raul/public_api.txt").getLines().mkString("\n")
-  val parser = new MyParser(ParserInput(hc))
-  (parser.Root.run(): @unchecked) match {
-    case Failure(e: ParseError) => println{
-      parser.formatError(e, new ErrorFormatter(showTraces = true))
+
+  def time[T](f: => T) = {
+    val before = System.currentTimeMillis()
+    val ret = f
+    println(s"Time took: ${System.currentTimeMillis() - before} ms")
+    ret
+  }
+
+  time {
+    val parser = new MyParser(ParserInput(file))
+
+    (parser.Root.run(): @unchecked) match {
+      case Failure(e: ParseError) => println {
+        parser.formatError(e, new ErrorFormatter(showTraces = true))
+      }
+      case Success(that) =>
+        new StubMaker(that).writeToOutput(new FileOutputStream("/tmp/slask.txt"))
     }
-    case Success(that) =>
-      new StubMaker(that, System.out)
   }
 }
